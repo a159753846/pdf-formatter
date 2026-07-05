@@ -1295,24 +1295,27 @@ body {
   /* Set page details */
   @page {
     size: A4 portrait;
-    margin: var(--doc-margin);
+    margin-top: calc(var(--doc-margin) + 12mm);
+    margin-bottom: calc(var(--doc-margin) + 12mm);
+    margin-left: var(--doc-margin);
+    margin-right: var(--doc-margin);
   }
 
   /* Header & Footer Printing */
   .document-header {
     position: fixed;
-    top: 0;
+    top: -12mm;
     left: 0;
     right: 0;
-    height: 30px;
+    height: 20px;
   }
 
   .document-footer {
     position: fixed;
-    bottom: 0;
+    bottom: -12mm;
     left: 0;
     right: 0;
-    height: 30px;
+    height: 20px;
   }
 
   /* Avoid page breaks inside headings and table rows */
