@@ -1254,6 +1254,11 @@ body {
 
 /* --- PRINT RULES (THE CORE ENGINE) --- */
 @media print {
+  /* Hide any external elements injected directly into body (like McAfee WebAdvisor, translator bars, etc.) */
+  body > *:not(.app-container) {
+    display: none !important;
+  }
+
   /* Hide the entire editor and sidebar UI completely */
   html, body {
     background-color: #fff !important;
