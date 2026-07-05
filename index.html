@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurora PDF 排版工具 — 即時生成精美文件</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+  
+  <!-- Markdown Parser (Marked) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar / Toolbar Panel -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i data-lucide="sparkles"></i>
+          <span>Aurora PDF</span>
+        </div>
+        <p class="subtitle">將純文字與 Markdown 轉換為精美學習講義</p>
+      </div>
+
+      <div class="control-groups-container">
+        <!-- 1. Text Parsing Mode -->
+        <section class="control-group">
+          <h3><i data-lucide="file-text"></i> 解析模式</h3>
+          <div class="radio-toggle-group">
+            <label class="radio-option active" id="mode-md">
+              <input type="radio" name="text-mode" value="markdown" checked>
+              <span>Markdown 語法</span>
+            </label>
+            <label class="radio-option" id="mode-plain">
+              <input type="radio" name="text-mode" value="plain">
+              <span>純文字</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 2. Typography & Themes -->
+        <section class="control-group">
+          <h3><i data-lucide="palette"></i> 學習與排版主題</h3>
+          <div class="theme-grid">
+            <button class="theme-card active" data-theme="cornell" title="康乃爾筆記法，左側關鍵字與右側筆記對齊">
+              <span class="theme-card-icon cornell-icon">C</span>
+              <span class="theme-card-label">康乃爾筆記</span>
+            </button>
+            <button class="theme-card" data-theme="lecture" title="重點標註講義風格，標題框與提示卡片設計">
+              <span class="theme-card-icon lecture-icon">L</span>
+              <span class="theme-card-label">重點講義</span>
+            </button>
+            <button class="theme-card" data-theme="spacious" title="右側保留超寬書寫格線，方便手寫註記">
+              <span class="theme-card-icon spacious-icon">S</span>
+              <span class="theme-card-label">手寫留白</span>
+            </button>
+            <button class="theme-card" data-theme="academic" title="傳統學院風襯線體排版">
+              <span class="theme-card-icon academic-icon">A</span>
+              <span class="theme-card-label">學院經典</span>
+            </button>
+            <button class="theme-card" data-theme="minimalist" title="現代極簡幾何無襯線體設計">
+              <span class="theme-card-icon minimalist-icon">M</span>
+              <span class="theme-card-label">極簡現代</span>
+            </button>
+            <button class="theme-card" data-theme="corporate" title="商務簡報或企劃案風格">
+              <span class="theme-card-icon corporate-icon">C</span>
+              <span class="theme-card-label">專業商務</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 3. Styling Parameters -->
+        <section class="control-group">
+          <h3><i data-lucide="sliders"></i> 字型與間距設定</h3>
+          
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>字型大小</span>
+              <span id="val-font-size">16px</span>
+            </div>
+            <input type="range" id="input-font-size" min="12" max="22" value="16" step="1">
+          </div>
+
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>行高</span>
+              <span id="val-line-height">1.6</span>
+            </div>
+            <input type="range" id="input-line-height" min="1.2" max="2.0" value="1.6" step="0.1">
+          </div>
+
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>段落間距</span>
+              <span id="val-para-gap">1.2rem</span>
+            </div>
+            <input type="range" id="input-para-gap" min="0.6" max="2.0" value="1.2" step="0.1">
+          </div>
+        </section>
+
+        <!-- 4. Page Margins & Setup -->
+        <section class="control-group">
+          <h3><i data-lucide="layout"></i> 頁面與邊距</h3>
+          
+          <div class="select-control">
+            <label for="input-margins">頁面邊距</label>
+            <select id="input-margins">
+              <option value="narrow">窄邊距 (15mm)</option>
+              <option value="normal" selected>標準邊距 (25mm)</option>
+              <option value="wide">寬邊距 (35mm)</option>
+            </select>
+          </div>
+
+          <div class="select-control">
+            <label for="input-paper-color">紙張色調</label>
+            <select id="input-paper-color">
+              <option value="white">純淨白</option>
+              <option value="ivory" selected>暖心象牙米</option>
+              <option value="cool-gray">柔和冷霧灰</option>
+              <option value="bookish">經典書卷黃</option>
+            </select>
+          </div>
+
+          <div class="select-control">
+            <label for="input-accent-color">主視覺強調色</label>
+            <select id="input-accent-color">
+              <option value="charcoal">質感石墨黑</option>
+              <option value="royal-navy">皇家海軍藍</option>
+              <option value="emerald">沉穩深森綠</option>
+              <option value="burgundy">勃根地酒紅</option>
+              <option value="ochre">復古深赭黃</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- 5. Header & Footer Details -->
+        <section class="control-group">
+          <h3><i data-lucide="notebook"></i> 頁首與頁尾</h3>
+          <div class="checkbox-control">
+            <label>
+              <input type="checkbox" id="toggle-header" checked>
+              <span>啟用文件頁首</span>
+            </label>
+          </div>
+          <div class="input-control" id="header-text-container">
+            <input type="text" id="input-header-text" placeholder="頁首顯示文字" value="學習筆記與個人整理講義">
+          </div>
+
+          <div class="checkbox-control" style="margin-top: 12px;">
+            <label>
+              <input type="checkbox" id="toggle-footer" checked>
+              <span>顯示頁尾頁碼</span>
+            </label>
+          </div>
+          <div class="checkbox-control" style="margin-top: 8px;">
+            <label>
+              <input type="checkbox" id="toggle-cover-page">
+              <span>首頁設為封面頁 (隱藏頁首尾)</span>
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <div class="sidebar-footer">
+        <button id="btn-print" class="btn-primary">
+          <i data-lucide="printer"></i>
+          <span>匯出 PDF / 列印</span>
+        </button>
+        <p class="print-tip-text">
+          <i data-lucide="help-circle"></i>
+          <span>列印提示：請在瀏覽器列印設定中，<b>取消勾選「頁首與頁尾」</b>（英文為 Headers and footers），即可隱藏網址與日期時間。</span>
+        </p>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+      <!-- Input Panel -->
+      <section class="panel editor-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="edit-3"></i>
+            <span>筆記編輯區</span>
+          </div>
+          <div class="panel-actions">
+            <input type="file" id="file-input" accept=".txt,.md" style="display: none;">
+            <button id="btn-import" class="btn-secondary-sm" title="導入 .txt / .md 檔案"><i data-lucide="upload" style="width: 14px; height: 14px; margin-right: 4px; display: inline-block; vertical-align: middle;"></i>導入</button>
+            <button id="btn-clear" class="btn-icon" title="清空所有內容"><i data-lucide="trash-2"></i></button>
+            <button id="btn-load-sample" class="btn-secondary-sm">載入範例</button>
+          </div>
+        </div>
+        
+        <!-- Editor Shortcut Toolbar -->
+        <div class="editor-toolbar">
+          <button class="toolbar-btn" data-tag="bold" title="粗體 (Ctrl+B)"><b>B</b></button>
+          <button class="toolbar-btn" data-tag="italic" title="斜體 (Ctrl+I)"><i>I</i></button>
+          <button class="toolbar-btn" data-tag="h2" title="插入標題">H2</button>
+          <div class="toolbar-divider"></div>
+          <button class="toolbar-btn alert-trigger" data-tag="note" title="插入觀念提示框"><i data-lucide="sparkles"></i> 觀念</button>
+          <button class="toolbar-btn alert-trigger" data-tag="warning" title="插入易錯警示框"><i data-lucide="alert-triangle"></i> 易錯</button>
+          <button class="toolbar-btn alert-trigger" data-tag="example" title="插入精選範例框"><i data-lucide="check-circle-2"></i> 範例</button>
+          <button class="toolbar-btn alert-trigger" data-tag="summary" title="插入本章總結框"><i data-lucide="book-open"></i> 總結</button>
+          <div class="toolbar-divider"></div>
+          <button class="toolbar-btn" data-tag="pagebreak" title="在此處強制分頁"><i data-lucide="scissors"></i> 分頁</button>
+        </div>
+
+        <div class="editor-container" id="drop-zone">
+          <textarea id="editor-textarea" placeholder="在這裡貼上您的文字...
+如果啟用了 Markdown 模式，您可以使用：
+# 標題 1
+## 標題 2
+* 列表清單項目
+**粗體文字**
+
+在獨立的一行輸入三個減號 '---' 可強制在此處進行 PDF 分頁！
+拖放 .txt 或 .md 檔案至此可直接載入。"></textarea>
+          <div class="drag-overlay">
+            <i data-lucide="file-up"></i>
+            <span>放開滑鼠以載入檔案</span>
+          </div>
+        </div>
+        
+        <div class="editor-footer">
+          <span id="char-count">0 個字元</span>
+          <span id="read-time-stats"><i data-lucide="clock" style="width: 13px; height: 13px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i>估計閱讀時間: 0 分鐘</span>
+        </div>
+      </section>
+
+      <!-- Preview Panel -->
+      <section class="panel preview-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="eye"></i>
+            <span>PDF 列印實時預覽</span>
+          </div>
+          <div class="panel-actions">
+            <span class="preview-mode-tag">A4 模擬頁面</span>
+          </div>
+        </div>
+        <div class="preview-container">
+          <div class="paper-page" id="paper-preview">
+            <!-- Dynamic header -->
+            <div class="document-header" id="doc-header">
+              <span class="header-text">學習筆記與個人整理講義</span>
+              <span class="header-line"></span>
+            </div>
+
+            <!-- Main Dynamic Content -->
+            <div class="document-content" id="doc-content">
+              <!-- Rendered content will appear here -->
+            </div>
+
+            <!-- Dynamic footer -->
+            <div class="document-footer" id="doc-footer">
+              <span class="footer-line"></span>
+              <div class="footer-flex">
+                <span class="footer-left"></span>
+                <span class="footer-right">第 <span class="page-num">1</span> 頁</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- JavaScript logic -->
+  <script src="app.js"></script>
+</body>
+</html>
