@@ -247,15 +247,39 @@
         <div class="preview-container">
           <div class="paper-page" id="paper-preview">
             <!-- Dynamic header -->
+            <!-- Dynamic header -->
             <div class="document-header" id="doc-header">
               <span class="header-text">學習筆記與個人整理講義</span>
               <span class="header-line"></span>
             </div>
 
-            <!-- Main Dynamic Content -->
-            <div class="document-content" id="doc-content">
-              <!-- Rendered content will appear here -->
-            </div>
+            <!-- Print Layout Table to reserve header/footer spaces across pages -->
+            <table class="print-layout-table">
+              <thead>
+                <tr>
+                  <td>
+                    <div class="print-header-spacer"></div>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <!-- Main Dynamic Content -->
+                    <div class="document-content" id="doc-content">
+                      <!-- Rendered content will appear here -->
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot class="print-table-tfoot">
+                <tr>
+                  <td>
+                    <div class="print-footer-spacer"></div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
 
             <!-- Dynamic footer -->
             <div class="document-footer" id="doc-footer">

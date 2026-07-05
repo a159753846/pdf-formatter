@@ -1236,6 +1236,22 @@ body {
   margin-bottom: 4px;
 }
 
+/* Print layout table reset for screen web view */
+.print-layout-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+}
+.print-layout-table td {
+  padding: 0;
+  border: none;
+}
+.print-header-spacer,
+.print-footer-spacer {
+  display: none;
+  height: 0;
+}
+
 /* --- PRINT RULES (THE CORE ENGINE) --- */
 @media print {
   /* Hide the entire editor and sidebar UI completely */
@@ -1295,27 +1311,46 @@ body {
   /* Set page details */
   @page {
     size: A4 portrait;
-    margin-top: calc(var(--doc-margin) + 12mm);
-    margin-bottom: calc(var(--doc-margin) + 12mm);
-    margin-left: var(--doc-margin);
-    margin-right: var(--doc-margin);
+    margin: var(--doc-margin);
   }
 
   /* Header & Footer Printing */
   .document-header {
     position: fixed;
-    top: -12mm;
+    top: 0;
     left: 0;
     right: 0;
-    height: 20px;
+    height: 30px;
+    display: flex !important;
   }
 
   .document-footer {
     position: fixed;
-    bottom: -12mm;
+    bottom: 0;
     left: 0;
     right: 0;
-    height: 20px;
+    height: 30px;
+    display: block !important;
+  }
+
+  /* Table Spacers inside print block to reserve space */
+  .print-layout-table {
+    display: table !important;
+    width: 100% !important;
+  }
+  .print-layout-table thead {
+    display: table-header-group !important;
+  }
+  .print-layout-table tfoot {
+    display: table-footer-group !important;
+  }
+  .print-header-spacer {
+    display: block !important;
+    height: 30px !important;
+  }
+  .print-footer-spacer {
+    display: block !important;
+    height: 30px !important;
   }
 
   /* Avoid page breaks inside headings and table rows */
