@@ -1417,3 +1417,116 @@ body {
     font-size: 0.8rem !important;
   }
 }
+
+/* --- RESPONSIVE MOBILE & TABLET LAYOUT --- */
+@media (max-width: 900px) {
+  .app-container {
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .control-groups-container {
+    max-height: 200px;
+    padding: 16px 20px;
+    gap: 16px;
+  }
+
+  .theme-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .workspace {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+    flex: none;
+  }
+
+  .panel {
+    height: auto;
+    min-height: auto;
+    flex: none;
+    width: 100%;
+  }
+
+  .editor-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .editor-container {
+    height: 250px;
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .editor-toolbar {
+    padding: 8px 16px;
+  }
+
+  .preview-panel {
+    min-height: 500px;
+  }
+
+  .preview-container {
+    padding: 16px;
+    overflow-x: hidden;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Scale the virtual A4 paper preview to fit the mobile viewport width */
+  .paper-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    aspect-ratio: 1 / 1.414;
+    padding: 18mm !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+
+  /* Dynamically scale down text properties on mobile screens */
+  .paper-page {
+    --doc-font-size: 11px !important;
+  }
+  
+  .document-content h1 { font-size: 1.8em; }
+  .document-content h2 { font-size: 1.4em; }
+  .document-content h3 { font-size: 1.15em; }
+
+  /* Stack Cornell notes cue columns to prevent squeezing on mobile screen */
+  .theme-cornell .cornell-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .theme-cornell .cornell-cue {
+    border-right: none;
+    border-bottom: 1.5px solid var(--doc-accent-color);
+    padding-right: 0;
+    padding-bottom: 4px;
+    text-align: left;
+  }
+}
+
+@media (max-width: 500px) {
+  .theme-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .control-groups-container {
+    max-height: 160px;
+  }
+  .paper-page {
+    padding: 12mm !important;
+    --doc-font-size: 9px !important;
+  }
+}
+
