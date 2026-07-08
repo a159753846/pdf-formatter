@@ -657,6 +657,23 @@ document.addEventListener('DOMContentLoaded', () => {
     window.print();
   });
 
+  // --- 手機版側邊欄展開與收合 ---
+  const btnToggleSidebar = document.getElementById('btn-toggle-sidebar');
+  const sidebarElement = document.querySelector('.sidebar');
+  
+  if (btnToggleSidebar && sidebarElement) {
+    btnToggleSidebar.addEventListener('click', () => {
+      sidebarElement.classList.toggle('open');
+      const isOpen = sidebarElement.classList.contains('open');
+      btnToggleSidebar.innerHTML = isOpen ? 
+        `<i data-lucide="x"></i><span>關閉設定</span>` : 
+        `<i data-lucide="sliders"></i><span>調整設定</span>`;
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+  }
+
   // --- 系統初始化 ---
   loadWorkspaceState();
   applyStyles();
