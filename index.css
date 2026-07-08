@@ -1479,9 +1479,10 @@ body {
   }
 
   .control-groups-container {
-    max-height: 250px;
+    max-height: none !important;
+    overflow-y: visible !important;
     padding: 16px 20px;
-    gap: 16px;
+    gap: 20px;
   }
 
   .theme-grid {
