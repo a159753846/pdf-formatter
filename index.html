@@ -173,17 +173,6 @@
           </div>
         </section>
       </div>
-
-      <div class="sidebar-footer">
-        <button id="btn-print" class="btn-primary">
-          <i data-lucide="printer"></i>
-          <span>匯出 PDF / 列印</span>
-        </button>
-        <p class="print-tip-text">
-          <i data-lucide="help-circle"></i>
-          <span>列印提示：請在瀏覽器列印設定中，<b>取消勾選「頁首與頁尾」</b>（英文為 Headers and footers），即可隱藏網址與日期時間。</span>
-        </p>
-      </div>
     </aside>
 
     <!-- Main Workspace -->
@@ -295,6 +284,17 @@
                 <span class="footer-right">第 <span class="page-num">1</span> 頁</span>
               </div>
             </div>
+          </div>
+          <!-- Print Actions directly under the preview -->
+          <div class="preview-actions">
+            <button id="btn-print" class="btn-primary btn-print-large">
+              <i data-lucide="printer"></i>
+              <span>匯出 PDF / 列印</span>
+            </button>
+            <p class="print-tip-text-preview">
+              <i data-lucide="help-circle"></i>
+              <span>列印提示：請在瀏覽器列印設定中，<b>取消勾選「頁首與頁尾」</b>（Headers and footers）以隱藏網址與時間。</span>
+            </p>
           </div>
         </div>
       </section>
