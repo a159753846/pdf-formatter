@@ -1489,7 +1489,7 @@ body {
     width: 100% !important;
     max-width: 100% !important;
     min-height: auto !important;
-    aspect-ratio: 1 / 1.414;
+    height: auto !important;
     padding: 18mm !important;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   }
