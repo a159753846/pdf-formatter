@@ -1583,10 +1583,12 @@ body {
   }
 
   .preview-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
     padding: 16px;
     overflow-x: hidden;
-    justify-content: center;
-    align-items: center;
   }
 
   /* Scale the virtual A4 paper preview to fit the mobile viewport width */
