@@ -1326,7 +1326,7 @@ body {
     left: 0;
     right: 0;
     height: 30px;
-    display: flex !important;
+    display: flex;
   }
 
   .document-footer {
@@ -1335,7 +1335,7 @@ body {
     left: 0;
     right: 0;
     height: 30px;
-    display: block !important;
+    display: block;
   }
 
   /* Table Spacers inside print block to reserve space */
@@ -1356,6 +1356,23 @@ body {
   .print-footer-spacer {
     display: block !important;
     height: 30px !important;
+  }
+
+  /* Handle hiding of headers/footers dynamically using JS toggled classes */
+  .hide-header .document-header {
+    display: none !important;
+  }
+  .hide-header .print-header-spacer {
+    display: none !important;
+    height: 0 !important;
+  }
+
+  .hide-footer .document-footer {
+    display: none !important;
+  }
+  .hide-footer .print-footer-spacer {
+    display: none !important;
+    height: 0 !important;
   }
 
   /* Avoid page breaks inside headings and table rows */

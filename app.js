@@ -403,6 +403,19 @@ document.addEventListener('DOMContentLoaded', () => {
     docFooter.style.display = toggleFooter.checked ? 'block' : 'none';
     headerTextContainer.style.display = toggleHeader.checked ? 'block' : 'none';
 
+    // 動態切換類別，讓 CSS 能夠在列印時隱藏/顯示對應的分頁保留欄位
+    if (toggleHeader.checked) {
+      paperPreview.classList.remove('hide-header');
+    } else {
+      paperPreview.classList.add('hide-header');
+    }
+
+    if (toggleFooter.checked) {
+      paperPreview.classList.remove('hide-footer');
+    } else {
+      paperPreview.classList.add('hide-footer');
+    }
+
     // 封面頁模式
     if (toggleCoverPage.checked) {
       paperPreview.classList.add('cover-page-layout');
