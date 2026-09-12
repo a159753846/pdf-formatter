@@ -580,6 +580,12 @@ body {
   font-size: 0.75rem;
 }
 
+.plain-mode-active .toolbar-btn:not([data-tag="pagebreak"]) {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .toolbar-divider {
   width: 1px;
   height: 16px;
@@ -736,6 +742,16 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+/* Cover Page Masks & Styles for Screen View */
+.cover-top-mask, 
+.cover-bottom-mask {
+  display: none;
+}
+
+.cover-page-layout .document-header {
+  visibility: hidden;
 }
 
 .document-header .header-line {
@@ -1470,10 +1486,33 @@ body {
     display: none !important;
   }
 
-  /* Hide header/footer on first page if configured */
-  body.first-page-cover .document-header,
-  body.first-page-cover .document-footer {
-    display: none !important;
+  /* Cover page print handling: isolate masks to page 1 without hiding other pages' headers/footers */
+  body.first-page-cover .cover-page-section {
+    position: relative;
+    min-height: 250mm;
+    box-sizing: border-box;
+  }
+
+  body.first-page-cover .cover-top-mask {
+    display: block !important;
+    position: absolute;
+    top: -12px;
+    left: -20px;
+    right: -20px;
+    height: 45px;
+    background-color: var(--doc-paper-color, #ffffff) !important;
+    z-index: 999;
+  }
+
+  body.first-page-cover .cover-bottom-mask {
+    display: block !important;
+    position: absolute;
+    bottom: -12px;
+    left: -20px;
+    right: -20px;
+    height: 45px;
+    background-color: var(--doc-paper-color, #ffffff) !important;
+    z-index: 999;
   }
 
   /* Dynamic Page Counter */

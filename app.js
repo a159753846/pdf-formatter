@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const headerTextSpan = document.querySelector('.header-text');
   const charCount = document.getElementById('char-count');
   const readTimeStats = document.getElementById('read-time-stats');
+  const pageCountStats = document.getElementById('page-count-stats');
+  const previewPageTag = document.getElementById('preview-page-tag');
   
   // 側邊欄控制項
   const modeMd = document.getElementById('mode-md');
@@ -252,6 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
         currentRow.appendChild(currentNotes);
         
         container.appendChild(currentRow);
+      } else if (child.classList && child.classList.contains('page-break-indicator')) {
+        // 分頁符號作為獨立頂層區塊，強制結束當前 row，避免將分頁包在 notes 欄位內引發錯位
+        currentRow = null;
+        currentNotes = null;
+        container.appendChild(child.cloneNode(true));
       } else {
         if (!currentRow) {
           // 在第一個 H2 出現之前的內容（例如大標題、引言），放在全寬的 row 中
@@ -364,7 +371,66 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // 5. 如果啟用了封面頁模式，為首頁注入隔離遮罩
+    if (toggleCoverPage.checked && charLen > 0) {
+      const coverParser = new DOMParser();
+      const coverDoc = coverParser.parseFromString(htmlContent, 'text/html');
+      const allElements = Array.from(coverDoc.body.children);
+      
+      const firstBreakIndex = allElements.findIndex(el => el.classList && el.classList.contains('page-break-indicator'));
+      const coverElements = firstBreakIndex !== -1 ? allElements.slice(0, firstBreakIndex) : allElements;
+      
+      const coverWrapper = coverDoc.createElement('div');
+      coverWrapper.className = 'cover-page-section';
+      
+      const maskTop = coverDoc.createElement('div');
+      maskTop.className = 'cover-top-mask';
+      const maskBottom = coverDoc.createElement('div');
+      maskBottom.className = 'cover-bottom-mask';
+      
+      coverWrapper.appendChild(maskTop);
+      coverElements.forEach(el => coverWrapper.appendChild(el));
+      coverWrapper.appendChild(maskBottom);
+      
+      if (firstBreakIndex !== -1) {
+        coverDoc.body.insertBefore(coverWrapper, allElements[firstBreakIndex]);
+      } else {
+        coverDoc.body.appendChild(coverWrapper);
+      }
+      
+      htmlContent = coverDoc.body.innerHTML;
+    }
+
     docContent.innerHTML = htmlContent;
+
+    // 計算預估頁數
+    const sections = text.split(/\n---\n/);
+    let totalEstimatedPages = 0;
+    if (charLen === 0) {
+      totalEstimatedPages = 0;
+    } else {
+      sections.forEach(sec => {
+        const secLen = sec.trim().length;
+        totalEstimatedPages += Math.max(1, Math.ceil(secLen / 650));
+      });
+    }
+
+    if (previewPageTag) {
+      previewPageTag.textContent = totalEstimatedPages > 0 ? `預估 ${totalEstimatedPages} 頁 A4` : 'A4 模擬頁面';
+    }
+    if (pageCountStats) {
+      pageCountStats.innerHTML = `<i data-lucide="file-text" style="width: 13px; height: 13px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i>預估 ${totalEstimatedPages} 頁`;
+    }
+
+    // 連動純文字模式之工具列禁用狀態
+    const editorPanel = document.querySelector('.editor-panel');
+    if (editorPanel) {
+      if (activeMode === 'plain') {
+        editorPanel.classList.add('plain-mode-active');
+      } else {
+        editorPanel.classList.remove('plain-mode-active');
+      }
+    }
 
     // 重新載入動態生成的圖標
     if (window.lucide) {
