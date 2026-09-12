@@ -467,13 +467,14 @@ body {
 }
 
 .panel-header {
-  padding: 16px 24px;
+  padding: 14px 20px;
   background: rgba(15, 17, 26, 0.4);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 60px;
+  gap: 8px;
 }
 
 .panel-title {
@@ -537,6 +538,8 @@ body {
   padding: 4px 10px;
   border-radius: 20px;
   border: 1px solid rgba(99, 102, 241, 0.25);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Editor Toolbar styling */
@@ -697,17 +700,18 @@ body {
 
 .preview-container {
   flex: 1;
-  padding: 40px;
-  overflow-y: auto;
+  padding: 30px 20px;
+  overflow: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: safe center;
   justify-content: flex-start;
   perspective: 1000px;
 }
 
 .preview-container::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 .preview-container::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.08);
@@ -717,6 +721,7 @@ body {
 /* --- THE VIRTUAL PAPER SHEET --- */
 .paper-page {
   width: 210mm; /* A4 Width */
+  max-width: 100%; /* Fit container width automatically on smaller screens */
   min-height: 297mm; /* A4 Height */
   background-color: var(--doc-paper-color);
   color: var(--doc-text-color);
@@ -728,6 +733,9 @@ body {
   display: flex;
   flex-direction: column;
   margin-bottom: 30px; /* Spacing between pages and action buttons */
+  margin-left: auto;
+  margin-right: auto;
+  flex-shrink: 0;
 }
 
 /* Header/Footer styling inside Document Preview */
@@ -1273,7 +1281,7 @@ body {
   gap: 12px;
   margin-top: 30px;
   width: 100%;
-  max-width: 210mm;
+  max-width: min(210mm, 100%);
   padding: 0 10px;
   box-sizing: border-box;
   margin-bottom: 50px;
