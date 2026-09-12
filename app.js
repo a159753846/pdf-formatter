@@ -178,8 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedFooterToggle = localStorage.getItem('aurora_footer_toggle');
     const savedCoverPage = localStorage.getItem('aurora_cover_page');
 
-    if (savedText !== null) editorTextarea.value = savedText;
-    else editorTextarea.value = sampleMarkdown;
+    if (savedText !== null && savedText !== sampleMarkdown && savedText !== samplePlainText) {
+      editorTextarea.value = savedText;
+    } else {
+      editorTextarea.value = '';
+    }
 
     if (savedMode) {
       document.querySelectorAll('input[name="text-mode"]').forEach(radio => {
